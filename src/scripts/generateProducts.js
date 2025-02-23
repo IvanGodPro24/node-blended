@@ -20,4 +20,4 @@ export const generateProducts = async (number) => {
   }
 };
 
-generateProducts(5);
+generateProducts(20);
