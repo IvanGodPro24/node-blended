@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate-products": "node src/scripts/generateProducts.js"
+    "generate-products": "node src/scripts/generateProducts.js",
+    "filter-products": "node src/scripts/filterByMinPrice.js",
+    "modify-products": "node src/scripts/modifyProducts.js"
   },
   "repository": {
     "type": "git",
