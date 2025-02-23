@@ -1,0 +1,24 @@
+{
+  "name": "blended",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate-products": "node src/scripts/generateProducts.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IvanGodPro24/node-blended.git"
+  },
+  "keywords": [],
+  "author": "Ivan Nepotachev <vanyanep@gmail.com>",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/IvanGodPro24/node-blended/issues"
+  },
+  "homepage": "https://github.com/IvanGodPro24/node-blended#readme",
+  "dependencies": {
+    "@faker-js/faker": "^9.5.0"
+  }
+}
