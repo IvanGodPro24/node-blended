@@ -6,7 +6,8 @@
   "scripts": {
     "generate-products": "node src/scripts/generateProducts.js",
     "filter-products": "node src/scripts/filterByMinPrice.js",
-    "modify-products": "node src/scripts/modifyProducts.js"
+    "modify-products": "node src/scripts/modifyProducts.js",
+    "total-price": "node src/scripts/countTotalPrice.js"
   },
   "repository": {
     "type": "git",
