@@ -18,8 +18,8 @@ export const deleteProduct = (productId) =>
 // export const updateProduct = (productId, productData) =>
 //   ProductModel.findOneAndUpdate({ id: productId }, productData, { new: true });
 
-export const updateProduct = (productId, productData, options = {}) => {
-  const result = ProductModel.findByIdAndUpdate(productId, productData, {
+export const updateProduct = async (productId, productData, options = {}) => {
+  const result = await ProductModel.findByIdAndUpdate(productId, productData, {
     new: true,
     includeResultMetadata: true,
     ...options,
