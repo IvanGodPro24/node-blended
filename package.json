@@ -8,7 +8,8 @@
     "filter-products": "node src/scripts/filterByMinPrice.js",
     "modify-products": "node src/scripts/modifyProducts.js",
     "total-price": "node src/scripts/countTotalPrice.js",
-    "get-categories": "node src/scripts/getProductsCategories.js"
+    "get-categories": "node src/scripts/getProductsCategories.js",
+    "get-prod-by-categories_oh": "node src/scripts/groupProductsByCategory_by_O-Hadalin.js"
   },
   "repository": {
     "type": "git",
