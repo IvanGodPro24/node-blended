@@ -8,6 +8,7 @@ import {
   upsertProductController,
   updateProductController,
 } from "../controllers/products.js";
+// import { validateBody } from "../utils/validateBody.js";
 
 const router = Router();
 
