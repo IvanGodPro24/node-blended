@@ -8,9 +8,12 @@ import {
   upsertProductController,
   updateProductController,
 } from "../controllers/products.js";
+import { checkToken } from "../middlewares/checkToken.js";
 // import { validateBody } from "../utils/validateBody.js";
 
 const router = Router();
+
+router.use(checkToken);
 
 router.get("/", ctrlWrapper(getProductsController));
 

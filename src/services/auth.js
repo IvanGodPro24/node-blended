@@ -16,6 +16,19 @@ export const createUser = async (userData) => {
   });
 };
 
-const createActiveSession = async (userId) => {
+export const createActiveSession = async (userId) => {
   await SessionsCollection.deleteOne({ userId });
+
+  return SessionsCollection.create({
+    userId,
+    ...createSession(),
+  });
 };
+
+export const findSessionByToken = (token) =>
+  SessionsCollection.findOne({ accessToken: token });
+
+export const findUserById = (userId) => UsersCollection.findById(userId);
+
+export const logoutUser = (sessionId, refreshToken) =>
+  SessionsCollection.deleteOne({ _id: sessionId, refreshToken });

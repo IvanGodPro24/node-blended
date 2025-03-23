@@ -1,29 +1,35 @@
 import { ProductModel } from "../db/models/Product.js";
 
-export const getProducts = () => ProductModel.find();
+export const getProducts = (userId) => ProductModel.find({ userId });
 
 // export const getProductById = (productId) =>
 //   ProductModel.findOne({ id: productId });
 
-export const getProductById = (productId) => ProductModel.findById(productId);
+export const getProductById = (productId, userId) =>
+  ProductModel.findOne({ _id: productId, userId });
 
-export const createProduct = (productData) => ProductModel.create(productData);
+export const createProduct = (productData, userId) =>
+  ProductModel.create({ userId, ...productData });
 
 // export const deleteProduct = (productId) =>
 //   ProductModel.findOneAndDelete({ id: productId });
 
-export const deleteProduct = (productId) =>
-  ProductModel.findByIdAndDelete(productId);
+export const deleteProduct = (productId, userId) =>
+  ProductModel.findOneAndDelete({ _id: productId, userId });
 
 // export const updateProduct = (productId, productData) =>
 //   ProductModel.findOneAndUpdate({ id: productId }, productData, { new: true });
 
-export const updateProduct = async (productId, productData, options = {}) => {
-  const result = await ProductModel.findByIdAndUpdate(productId, productData, {
-    new: true,
-    includeResultMetadata: true,
-    ...options,
-  });
+export const updateProduct = async (productId, userId, productData, options = {}) => {
+  const result = await ProductModel.findOneAndUpdate(
+    { _id: productId, userId},
+    productData,
+    {
+      new: true,
+      includeResultMetadata: true,
+      ...options,
+    }
+  );
 
   if (!result || !result.value) {
     return null;
