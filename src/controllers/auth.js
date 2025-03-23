@@ -5,6 +5,7 @@ import {
   findUserByEmail,
   createUser,
   logoutUser,
+  findSessionById,
 } from "../services/auth.js";
 import { setupCookies } from "../utils/setupCookies.js";
 
@@ -59,4 +60,29 @@ export const logoutUserController = async (req, res) => {
   res.clearCookie("refreshToken");
 
   res.status(204).send();
+};
+
+export const refreshUserSessionController = async (req, res) => {
+  const { sessionId, refreshToken } = req.cookies;
+
+  const session = await findSessionById(sessionId, refreshToken);
+
+  if (!session) throw createHttpError(401, "Session not found");
+
+  const isExpiredRefreshToken = Date.now() > session.refreshTokenValidUntil;
+
+  if (isExpiredRefreshToken)
+    throw createHttpError(401, "Refresh token expired");
+
+  const newSession = await createActiveSession(session.userId);
+
+  setupCookies(res, newSession);
+
+  res.json({
+    status: 200,
+    message: "Successfully refreshed a session!",
+    data: {
+      accessToken: newSession.accessToken,
+    },
+  });
 };

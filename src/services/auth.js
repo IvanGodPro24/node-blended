@@ -32,3 +32,6 @@ export const findUserById = (userId) => UsersCollection.findById(userId);
 
 export const logoutUser = (sessionId, refreshToken) =>
   SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
+
+export const findSessionById = (sessionId, refreshToken) =>
+  SessionsCollection.findOne({ _id: sessionId, refreshToken });
