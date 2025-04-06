@@ -1,5 +1,7 @@
 import createHttpError from "http-errors";
-import { findSessionByToken, findUserById } from "../services/auth.js";
+import { findUserById } from "../services/auth.js";
+import jwt from "jsonwebtoken";
+import { env } from "../utils/env.js";
 
 export const checkToken = async (req, res, next) => {
   const authHeader = req.get("Authorization");
@@ -16,21 +18,9 @@ export const checkToken = async (req, res, next) => {
     return;
   }
 
-  const session = await findSessionByToken(token);
+  const { id } = jwt.verify(token, env("JWT_SECRET"));
 
-  if (!session) {
-    next(createHttpError(401, "Session not found"));
-    return;
-  }
-
-  const isExpiredAccessToken = Date.now() > session.accessTokenValidUntil;
-
-  if (isExpiredAccessToken) {
-    next(createHttpError(401, "Access token expired"));
-    return;
-  }
-
-  const user = await findUserById(session.userId);
+  const user = await findUserById(id);
 
   if (!user) {
     next(createHttpError(401, "User not found"));

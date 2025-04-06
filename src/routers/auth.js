@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { validateBody } from "../utils/validateBody.js";
-import { registerUserSchema } from "../validation/user.js";
+import { loginUserSchema, registerUserSchema } from "../validation/user.js";
 import {
-//   loginUserController,
-//   logoutUserController,
-//   refreshUserSessionController,
+  loginUserController,
+  logoutUserController,
+  refreshUserSessionController,
   registerUserController,
 } from "../controllers/auth.js";
 import { ctrlWrapper } from "../utils/ctrlWrapper.js";
+import { checkToken } from "../middlewares/checkToken.js";
 
 const router = Router();
 
@@ -17,14 +18,14 @@ router.post(
   ctrlWrapper(registerUserController)
 );
 
-// router.post(
-//   "/login",
-//   validateBody(loginUserSchema),
-//   ctrlWrapper(loginUserController)
-// );
+router.post(
+  "/login",
+  validateBody(loginUserSchema),
+  ctrlWrapper(loginUserController)
+);
 
-// router.post("/logout", ctrlWrapper(logoutUserController));
+router.post("/logout", checkToken, ctrlWrapper(logoutUserController));
 
-// router.post("/refresh", ctrlWrapper(refreshUserSessionController));
+router.get("/current", checkToken, ctrlWrapper(refreshUserSessionController));
 
 export default router;

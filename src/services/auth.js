@@ -2,8 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { UsersCollection } from "../db/models/User.js";
 import { env } from "../utils/env.js";
-// import { SessionsCollection } from "../db/models/Session.js";
-// import { createSession } from "../utils/createSession.js";
 
 export const findUserByEmail = (email) => UsersCollection.findOne({ email });
 
@@ -34,22 +32,8 @@ export const createUser = async (userData) => {
   return newUser;
 };
 
-// export const createActiveSession = async (userId) => {
-//   await SessionsCollection.deleteOne({ userId });
+export const findUserById = (userId) => UsersCollection.findById(userId);
 
-//   return SessionsCollection.create({
-//     userId,
-//     ...createSession(),
-//   });
-// };
-
-// export const findSessionByToken = (token) =>
-//   SessionsCollection.findOne({ accessToken: token });
-
-// export const findUserById = (userId) => UsersCollection.findById(userId);
-
-// export const logoutUser = (sessionId, refreshToken) =>
-//   SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
-
-// export const findSessionById = (sessionId, refreshToken) =>
-//   SessionsCollection.findOne({ _id: sessionId, refreshToken });
+export const logoutUser = async (userId) => {
+  await UsersCollection.findByIdAndUpdate(userId, { token: "" });
+};

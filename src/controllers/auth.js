@@ -1,10 +1,11 @@
 import createHttpError from "http-errors";
-// import bcrypt from "bcrypt";
+import bcrypt from "bcrypt";
 import {
   //   createActiveSession,
   findUserByEmail,
   createUser,
-  //   logoutUser,
+  updateUserWithToken,
+  logoutUser,
   //   findSessionById,
 } from "../services/auth.js";
 // import { setupCookies } from "../utils/setupCookies.js";
@@ -25,63 +26,40 @@ export const registerUserController = async (req, res) => {
   });
 };
 
-// export const loginUserController = async (req, res) => {
-//   const user = await findUserByEmail(req.body.email);
+export const loginUserController = async (req, res) => {
+  const user = await findUserByEmail(req.body.email);
 
-//   if (!user) throw createHttpError(401, "Credentials wrong!");
+  if (!user) throw createHttpError(401, "Credentials wrong!");
 
-//   const isEqualPassword = await bcrypt.compare(
-//     req.body.password,
-//     user.password
-//   );
+  const isEqualPassword = await bcrypt.compare(
+    req.body.password,
+    user.password
+  );
 
-//   if (!isEqualPassword) throw createHttpError(401, "Credentials wrong!");
+  if (!isEqualPassword) throw createHttpError(401, "Credentials wrong!");
 
-//   const session = await createActiveSession(user._id);
+  const newUser = await updateUserWithToken(user._id);
 
-//   setupCookies(res, session);
+  res.json({
+    user: {
+      name: newUser.name,
+      email: newUser.email,
+    },
+    token: newUser.token,
+  });
+};
 
-//   res.json({
-//     status: 200,
-//     message: "Successfully logged in an user!",
-//     data: {
-//       accessToken: session.accessToken,
-//     },
-//   });
-// };
+export const logoutUserController = async (req, res) => {
+  await logoutUser(req.user._id);
 
-// export const logoutUserController = async (req, res) => {
-//   const { sessionId, refreshToken } = req.cookies;
+  res.status(204).send();
+};
 
-//   await logoutUser(sessionId, refreshToken);
+export const refreshUserSessionController = async (req, res) => {
+  const { name, email } = req.user;
 
-//   res.clearCookie("sessionId");
-//   res.clearCookie("refreshToken");
-
-//   res.status(204).send();
-// };
-
-// export const refreshUserSessionController = async (req, res) => {
-//   const { sessionId, refreshToken } = req.cookies;
-
-//   const session = await findSessionById(sessionId, refreshToken);
-
-//   if (!session) throw createHttpError(401, "Session not found");
-
-//   const isExpiredRefreshToken = Date.now() > session.refreshTokenValidUntil;
-
-//   if (isExpiredRefreshToken)
-//     throw createHttpError(401, "Refresh token expired");
-
-//   const newSession = await createActiveSession(session.userId);
-
-//   setupCookies(res, newSession);
-
-//   res.json({
-//     status: 200,
-//     message: "Successfully refreshed a session!",
-//     data: {
-//       accessToken: newSession.accessToken,
-//     },
-//   });
-// };
+  res.json({
+    name,
+    email,
+  });
+};
