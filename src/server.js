@@ -18,7 +18,7 @@ export const setupServer = () => {
     cors({
       origin: [
         "http://localhost:5173",
-        "https://goit-react-hw-08-pi-plum.vercel.app/",
+        "https://goit-react-hw-08-pi-plum.vercel.app",
       ],
       credentials: true,
     })
