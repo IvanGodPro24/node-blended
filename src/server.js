@@ -14,7 +14,15 @@ export const setupServer = () => {
   const app = express();
 
   app.use(express.json());
-  app.use(cors());
+  app.use(
+    cors({
+      origin: [
+        "http://localhost:5173",
+        "https://goit-react-hw-08-pi-plum.vercel.app/",
+      ],
+      credentials: true,
+    })
+  );
   app.use(cookieParser());
 
   app.use("/users", authRouter);
